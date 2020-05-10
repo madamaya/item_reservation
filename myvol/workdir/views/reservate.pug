@@ -5,11 +5,28 @@ block content
   h2 物品を予約するページ
   form(method="post" action="/items")
     div
-      h5 予約開始日時
-      input(type="text" name="startTime")
+      h5 予約開始
+      h6 予約開始日：
+      input(type="date" name="startDate")
+      select(name="startTime")
+        option(value="") -
+        - for (let i = 0; i <= 12; i++)
+          option(value=`${i}`) #{i}
+      select(name="startMin")
+        option(value="") -
+        - for (let i = 0; i < 60; i+=15)
+          option(value=`${i}`) #{i}
     div
-      h5 予約終了日時
-      input(type="text" name="endTime")
+      h5 予約終了
+      input(type="date" name="endDate")
+      select(name="endTime")
+        option(value="") -
+        - for (let i = 0; i <= 12; i++)
+          option(value=`${i}`) #{i}
+      select(name="endMin")
+        option(value="") -
+        - for (let i = 0; i < 60; i+=15)
+          option(value=`${i}`) #{i}
     div
       input(type="hidden" value=userId)
     div

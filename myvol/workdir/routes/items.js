@@ -40,10 +40,14 @@ router.get('/:id/delete', function (req, res, next) {
   res.redirect('/');
 });
 
+router.get('/:id/reservate', function (req, res, next) {
+  res.render('reservate');
+});
+
 router.post('/', function (req, res, next) {
   const id = uuid.v4();
   const date = new Date();
-  console.log(new Date());
+  console.log(req.body);
   Items.create({
     id: id,
     name: req.body.name,
