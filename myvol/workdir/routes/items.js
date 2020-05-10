@@ -18,6 +18,18 @@ router.get('/:id/edit', function (req, res, next) {
   });
 });
 
+router.post('/:id', function (req, res, next) {
+  Items.upsert({
+    id: req.params.id,
+    name: req.body.name,
+    comment: req.body.comment,
+    createdAt: new Date(new Date().getTime() + 9 * 60 * 60 * 1000),
+    valid: 1
+  }).then(() => {
+    res.redirect('/');
+  });
+});
+
 router.get('/:id/delete', function (req, res, next) {
   const id = req.params.id;
   Items.update({ valid: 0 }, {
@@ -29,12 +41,14 @@ router.get('/:id/delete', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-  const id = req.body.id || uuid.v4();
-  Items.upsert({
+  const id = uuid.v4();
+  const date = new Date();
+  console.log(new Date());
+  Items.create({
     id: id,
     name: req.body.name,
     comment: req.body.comment,
-    createdAt: new Date(),
+    createdAt: new Date(new Date().getTime() + 9 * 60 * 60 * 1000),
     valid: 1
   }).then(() => {
     res.redirect('/');

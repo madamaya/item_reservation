@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 物品を利用予約するWebサイト
+  h2 物品を予約するページ
+  form(method="post" action="/items")
+    div
+      h5 予約開始日時
+      input(type="text" name="startTime")
+    div
+      h5 予約終了日時
+      input(type="text" name="endTime")
+    div
+      input(type="hidden" value=userId)
+    div
+      button(type="submit") 投稿
