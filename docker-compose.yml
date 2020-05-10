@@ -5,6 +5,8 @@ services:
     container_name: postgresql
     ports:
       - "5432:5432"
+    networks:
+      - my-network
     volumes:
       - "./myvol/pgdata:/pgdata"
     environment:
@@ -18,6 +20,11 @@ services:
     container_name: nodejs
     ports:
       - "8000:8000"
+    networks:
+      - my-network
     volumes:
       - "./myvol/workdir:/workdir"
     command: [sh, -c, yarn install && PORT=8000 yarn start]
+
+networks:
+  my-network:

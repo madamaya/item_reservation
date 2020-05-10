@@ -1,9 +1,16 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  if user
-    a(href="/logout") Logout
-  else
-    a(href="/login") Login
+  h1 物品を利用予約するWebサイト
+  div
+    a(href="/items/new") 物品を追加する
+  h3 物品一覧
+  hr
+  each item in items
+    h4 #{item.name}
+    p #{item.comment}
+    div
+      a(href=`/items/${item.id}/edit`) 詳細・予約する
+    div
+      a(href=`/items/${item.id}/delete`) 削除する
+    hr
