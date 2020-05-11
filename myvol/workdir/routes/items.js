@@ -47,7 +47,7 @@ router.get('/:id/reservate', function (req, res, next) {
 router.post('/', function (req, res, next) {
   const id = uuid.v4();
   const date = new Date();
-  console.log(req.body);
+  // console.log(req.body);
   Items.create({
     id: id,
     name: req.body.name,

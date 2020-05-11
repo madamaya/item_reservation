@@ -3,10 +3,9 @@ extends layout
 block content
   h1 物品を利用予約するWebサイト
   h2 物品を予約するページ
-  form(method="post" action="/items")
+  form#form()
     div
-      h5 予約開始
-      h6 予約開始日：
+      h5 予約開始日時
       input(type="date" name="startDate")
       select(name="startTime")
         option(value="") -
@@ -17,13 +16,13 @@ block content
         - for (let i = 0; i < 60; i+=15)
           option(value=`${i}`) #{i}
     div
-      h5 予約終了
+      h5 予約終了日時
       input(type="date" name="endDate")
       select(name="endTime")
         option(value="") -
         - for (let i = 0; i <= 12; i++)
           option(value=`${i}`) #{i}
-      select(name="endMin")
+      select#log(name="endMin")
         option(value="") -
         - for (let i = 0; i < 60; i+=15)
           option(value=`${i}`) #{i}
@@ -31,3 +30,16 @@ block content
       input(type="hidden" value=userId)
     div
       button(type="submit") 投稿
+
+
+    script.
+      const fm = document.getElementById("form");
+      const log = document.getElementById("log");
+      console.log(fm);
+      fm.addEventListener('submit', function (event) {
+        if (0===0) {
+          log.setCustomValidity("I am expecting an e-mail address!");
+        } else {
+          log.setCustomValidity("");
+        }
+      });
