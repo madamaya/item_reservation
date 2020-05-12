@@ -3,43 +3,40 @@ extends layout
 block content
   h1 物品を利用予約するWebサイト
   h2 物品を予約するページ
-  form#form()
+  form#form
     div
       h5 予約開始日時
-      input(type="date" name="startDate")
-      select(name="startTime")
+      div#startErr.err
+
+      input#startDate(type="date" name="startDate")
+      select#startTime(name="startTime")
         option(value="") -
-        - for (let i = 0; i <= 12; i++)
+        - for (let i = 0; i < 24; i++)
           option(value=`${i}`) #{i}
-      select(name="startMin")
+      select#startMin(name="startMin")
         option(value="") -
         - for (let i = 0; i < 60; i+=15)
           option(value=`${i}`) #{i}
     div
       h5 予約終了日時
-      input(type="date" name="endDate")
-      select(name="endTime")
+      div#endErr.err
+
+      input#endDate(type="date" name="endDate")
+      select#endTime(name="endTime")
         option(value="") -
-        - for (let i = 0; i <= 12; i++)
+        - for (let i = 0; i < 24; i++)
           option(value=`${i}`) #{i}
-      select#log(name="endMin")
+      select#endMin(name="endMin")
         option(value="") -
         - for (let i = 0; i < 60; i+=15)
           option(value=`${i}`) #{i}
     div
       input(type="hidden" value=userId)
+
+    div#nullErr.err
+
     div
-      button(type="submit") 投稿
+      button#button(type="submit") 投稿
 
-
-    script.
-      const fm = document.getElementById("form");
-      const log = document.getElementById("log");
-      console.log(fm);
-      fm.addEventListener('submit', function (event) {
-        if (0===0) {
-          log.setCustomValidity("I am expecting an e-mail address!");
-        } else {
-          log.setCustomValidity("");
-        }
-      });
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+  script(src="/javascripts/validate.js")
