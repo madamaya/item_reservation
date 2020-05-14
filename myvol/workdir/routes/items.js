@@ -46,13 +46,18 @@ router.get('/:id/reservate', isAuthenticated, function (req, res, next) {
   res.render('reservate', { user: req.user, itemId: req.params.id });
 });
 
-function noDuplicationTime(itemId, st, ed) {
+async function noDuplicationTime(itemId, st, ed) {
   const loader = require('../models/sequelize-loader');
   const Sequelize = loader.Sequelize;
   const Op = Sequelize.Op;
   Reservation.findAll({
     where: {
       [Op.and]: [
+        {
+          itemId: {
+            itemId
+          }
+        },
         {
           startTime: {
             [Op.lt]: ed
