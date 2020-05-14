@@ -14,7 +14,7 @@ router.get('/:id/edit', function (req, res, next) {
       id: req.params.id
     }
   }).then((item) => {
-    res.render('edit', { id: item.id, name: item.name, comment: item.comment });
+    res.render('edit', { id: item.id, name: item.name, comment: item.comment, user: req.user });
   });
 });
 
@@ -41,7 +41,7 @@ router.get('/:id/delete', function (req, res, next) {
 });
 
 router.get('/:id/reservate', function (req, res, next) {
-  res.render('reservate');
+  res.render('reservate', { user: req.user });
 });
 
 router.post('/', function (req, res, next) {

@@ -69,12 +69,12 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 
 passport.serializeUser(function (user, done) {
-  console.log(user);
+  console.log('serializeUser::' + JSON.stringify(user));
   done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
-  console.log('deserializeUser::' + user);
+  console.log('deserializeUser::' + JSON.stringify(user));
   User.findOne({
     where: { name: user.name }
   }).then((user) => {
