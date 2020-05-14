@@ -2,17 +2,23 @@ extends layout
 
 block content
   h1 物品を利用予約するWebサイト
-  div
-    a(href="/items/new") 物品を追加する
+  if user
+    p こんにちは #{user.name} さん
+  if user
+    div
+      a(href="/items/new") 物品を追加する
   h3 物品一覧
   hr
-  each item in items
-    h4 #{item.name}
-    p #{item.comment}
-    div
-      a(href=`/items/${item.id}/edit`) 物品名，コメントを編集する
-    div
-      a(href=`/items/${item.id}/reservate`) 予約する
-    div
-      a(href=`/items/${item.id}/delete`) 削除する
-    hr
+  if user
+    each item in items
+      h4 #{item.name}
+      p #{item.comment}
+      div
+        a(href=`/items/${item.id}/edit`) 物品名，コメントを編集する
+      div
+        a(href=`/items/${item.id}/reservate`) 予約する
+      div
+        a(href=`/items/${item.id}/delete`) 削除する
+      hr
+  else
+    h2.err ログインしてください

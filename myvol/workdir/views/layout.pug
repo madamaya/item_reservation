@@ -5,6 +5,11 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     a(href="/") ホーム
+    br
+    if user
+      a(href="/logout") ログアウトする
+    else
+      a(href="/login") ログインする
     block content
 
     script(src="/javascripts/bundle.js")

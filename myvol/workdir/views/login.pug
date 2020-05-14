@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  form(method="post" action="/login")
+    div
+      h5 ユーザ名
+      input(type="text" name="username")
+    div
+      h5 パスワード
+      input(type="password" name="password")
+    div
+      button(type="submit") 投稿
