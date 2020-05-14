@@ -1,14 +1,16 @@
 var express = require('express');
 var router = express.Router();
+var isAuthenticated = require('./isAuthenticated');
 const Items = require('../models/items');
+const Reservation = require('../models/reservation');
 const uuid = require('uuid');
 
 /* GET home page. */
-router.get('/new', function (req, res, next) {
+router.get('/new', isAuthenticated, function (req, res, next) {
   res.render('new');
 });
 
-router.get('/:id/edit', function (req, res, next) {
+router.get('/:id/edit', isAuthenticated, function (req, res, next) {
   Items.findOne({
     where: {
       id: req.params.id
@@ -18,7 +20,7 @@ router.get('/:id/edit', function (req, res, next) {
   });
 });
 
-router.post('/:id', function (req, res, next) {
+router.post('/:id', isAuthenticated, function (req, res, next) {
   Items.upsert({
     id: req.params.id,
     name: req.body.name,
@@ -30,7 +32,7 @@ router.post('/:id', function (req, res, next) {
   });
 });
 
-router.get('/:id/delete', function (req, res, next) {
+router.get('/:id/delete', isAuthenticated, function (req, res, next) {
   const id = req.params.id;
   Items.update({ valid: 0 }, {
     where: {
@@ -40,15 +42,84 @@ router.get('/:id/delete', function (req, res, next) {
   res.redirect('/');
 });
 
-router.get('/:id/reservate', function (req, res, next) {
-  res.render('reservate', { user: req.user });
+router.get('/:id/reservate', isAuthenticated, function (req, res, next) {
+  res.render('reservate', { user: req.user, itemId: req.params.id });
 });
 
-router.post('/', function (req, res, next) {
+function noDuplicationTime(itemId, st, ed) {
+  const loader = require('../models/sequelize-loader');
+  const Sequelize = loader.Sequelize;
+  const Op = Sequelize.Op;
+  Reservation.findAll({
+    where: {
+      [Op.and]: [
+        {
+          startTime: {
+            [Op.lt]: ed
+          }
+        },
+        {
+          endTime: {
+            [Op.gt]: st
+          }
+        }
+      ]
+    }
+  }).then((reservations) => {
+    console.log('reservations=' + JSON.stringify(reservations) + ',' + reservations.length);
+
+    if (reservations.length === 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  });
+}
+
+router.post('/:id/reservate', isAuthenticated, function (req, res, next) {
+  const resId = uuid.v4();
+  const stTime = req.body.startDate + ' ' + ('00' + req.body.startTime).slice(-2) + ':' + ('00' + req.body.startMin).slice(-2) + ':00';
+  const edTime = req.body.endDate + ' ' + ('00' + req.body.endTime).slice(-2) + ':' + ('00' + req.body.endMin).slice(-2) + ':00';
+
+  var flag = noDuplicationTime(req.params.id, stTime, edTime);
+  console.log('flag=' + flag);
+  if (flag) {
+    // console.log(stTime);
+    // console.log(edTime);
+    // console.log('req.params.id=' + req.params.id);
+    // console.log('startTime=' + stTime);
+    // console.log('endTime=' + edTime);
+    // console.log('reservedBy=' + req.body.userId);
+    // console.log('valid=' + 1);
+    Reservation.create({
+      reservationId: resId,
+      itemId: req.params.id,
+      startTime: stTime,
+      endTime: edTime,
+      reservedBy: req.body.userId,
+      valid: 1
+    }).then((err) => {
+      console.log(err);
+      // 予約完了ページに遷移
+      console.log('complete!');
+      res.redirect('/');
+    });
+  }
+  else {
+    // 予約失敗ページに遷移
+    console.log('failed!')
+    res.redirect('/');
+  }
+
+  // res.redirect('/');
+})
+
+router.post('/', isAuthenticated, function (req, res, next) {
   const id = uuid.v4();
   const date = new Date();
   // console.log(req.body);
-  Items.create({
+  Reservation.create({
     id: id,
     name: req.body.name,
     comment: req.body.comment,
