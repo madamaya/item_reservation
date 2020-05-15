@@ -4,11 +4,12 @@ function deleteErr() {
   $('#nullErr').empty();
   $('#startErr').empty();
   $('#endErr').empty();
+  $('#dupErr').empty();
 }
 
 $("#form").submit(function () {
-  console.log('a');
   let err = false;
+  const itemId = $('#itemId').val();
   const startDate = $('#startDate').val();
   const startTime = $('#startTime').val();
   const startMin = $('#startMin').val();
@@ -38,6 +39,31 @@ $("#form").submit(function () {
       $('#endErr').append('<p>終了時間は開始時間より後を指定してください</p>');
     }
   }
-  if (err)
+  if (!err) {
+    console.log('checking!!!');
+    $.ajax({
+      url: `/items/${itemId}/reservate/check`,
+      type: 'post',
+      data: {
+        startDate, startTime, startMin, endDate, endTime, endMin
+      },
+      async: false
+    })
+      .done(
+        (data) => {
+          // 重複があるとき
+          // alert(JSON.stringify(data));
+          if (!data.return) {
+            err = true;
+            $('#dupErr').append('<p>指定した時間が他の予約と重複しています</p>')
+          }
+        }
+      );
+  }
+  if (err) {
+    // alert('jquery:: err')
     return false;
+  }
+
 });
+

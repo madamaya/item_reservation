@@ -24,14 +24,11 @@ passport.use(new LocalStrategy(
     }).then((user) => {
       console.log('app.js new LocalStrategy:: after findOne:' + user);
       if (!user) {
-        console.log(':2:2');
         return done(null, false, { message: "ユーザが見つかりません" });
       }
       if (user.password === hashedPassword) {
-        console.log(':::::' + user);
         return done(null, user);
       }
-      console.log(':4:4');
       return done(null, false, { message: "パスワードが違います" });
     });
   }
@@ -84,7 +81,6 @@ passport.deserializeUser(function (user, done) {
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  console.log('::::404');
   next(createError(404));
 });
 

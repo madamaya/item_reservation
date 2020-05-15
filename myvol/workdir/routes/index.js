@@ -5,7 +5,7 @@ const Items = require('../models/items');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  console.log('::user::' + JSON.stringify(req.user));
+  // console.log('::user::' + JSON.stringify(req.user));
   Items.findAll({
     attributes: ['id', 'name', 'comment'],
     where: {
