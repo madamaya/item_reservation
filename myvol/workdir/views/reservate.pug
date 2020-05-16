@@ -3,6 +3,15 @@ extends layout
 block content
   h1 物品を利用予約するWebサイト
   h2 物品を予約するページ
+
+  //- table
+  //-   tr
+  //-     td(colspan="2") 00:00
+  //-     td(colspan="2") 01:00
+  //-   tr
+  //-     td
+  //-     td
+
   form#form(method="post" action=`/items/${itemId}/reservate`)
     div
       h5 予約開始日時
@@ -31,12 +40,17 @@ block content
         - for (let i = 0; i < 60; i+=15)
           option(value=`${i}`) #{i}
     div
+<<<<<<< HEAD
       input(type="hidden" name="userId" value=user.id)
+=======
+      input#itemId(type="hidden" name="itemId" value=itemId)
+      input#userId(type="hidden" name="userId" value=user.id)
+>>>>>>> feature
 
     div#nullErr.err
-
+    div#dupErr.err
     div
       button#button(type="submit") 投稿
 
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
-  script(src="/javascripts/validate.js")
+  script(src="/javascripts/bundle.js")

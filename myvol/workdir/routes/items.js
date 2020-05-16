@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var isAuthenticated = require('./isAuthenticated');
+const loader = require('../models/sequelize-loader');
+const Sequelize = loader.Sequelize;
+const Op = Sequelize.Op;
 const Items = require('../models/items');
 const Reservation = require('../models/reservation');
 const uuid = require('uuid');
@@ -134,5 +137,42 @@ router.post('/', isAuthenticated, function (req, res, next) {
     res.redirect('/');
   });
 });
+
+
+router.post('/:id/reservate/check', isAuthenticated, function (req, res, next) {
+  const itemId = req.params.id;
+  const st = req.body.startDate + ' ' + ('00' + req.body.startTime).slice(-2) + ':' + ('00' + req.body.startMin).slice(-2) + ':00';
+  const ed = req.body.endDate + ' ' + ('00' + req.body.endTime).slice(-2) + ':' + ('00' + req.body.endMin).slice(-2) + ':00';
+  Reservation.findAll({
+    where: {
+      [Op.and]: [
+        {
+          itemId:
+            itemId
+        },
+        {
+          startTime: {
+            [Op.lt]: ed
+          }
+        },
+        {
+          endTime: {
+            [Op.gt]: st
+          }
+        }
+      ]
+    }
+  }).then((reservations) => {
+    if (reservations.length === 0) {
+      console.log('check::return true');
+      res.json({ return: true });
+    }
+    else {
+      console.log('check::return false');
+      res.json({ return: false });
+    }
+  });
+});
+
 
 module.exports = router;
