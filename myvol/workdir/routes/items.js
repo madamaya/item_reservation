@@ -46,7 +46,9 @@ router.get('/:id/delete', isAuthenticated, function (req, res, next) {
 });
 
 router.get('/:id/reservate', isAuthenticated, function (req, res, next) {
-  res.render('reservate', { user: req.user, itemId: req.params.id });
+  const today = new Date();
+  const displayDay = ('0000' + today.getFullYear()).slice(-4) + '/' + ('00' + today.getMonth()).slice(-2) + '/' + ('00' + today.getDate()).slice(-2);
+  res.render('reservate', { user: req.user, itemId: req.params.id, displayDay });
 });
 
 async function noDuplicationTime(itemId, st, ed) {
@@ -127,7 +129,7 @@ router.post('/', isAuthenticated, function (req, res, next) {
   const id = uuid.v4();
   const date = new Date();
   // console.log(req.body);
-  Reservation.create({
+  Items.create({
     id: id,
     name: req.body.name,
     comment: req.body.comment,

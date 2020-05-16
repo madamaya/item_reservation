@@ -10,3 +10,34 @@ a {
 .err {
   color: red;
 }
+
+.reserveTable {
+  border-collapse: collapse;
+  border: 1px black solid;
+  table-layout: fixed;
+}
+
+.reserveTableHeader {
+  border-collapse: collapse;
+  border: 1px black solid;
+  width: 50px;
+  height: 10px;
+}
+
+.reserveTableBoxFirst {
+  border-collapse: collapse;
+  border: 1px black dotted;
+  border-left: 1px black solid;
+  height: 20px;
+}
+
+.reserveTableBoxInter {
+  border-collapse: collapse;
+  border: 1px black dotted;
+}
+
+.reserveTableBoxLast {
+  border-collapse: collapse;
+  border: 1px black dotted;
+  border-right: 1px black solid;
+}

@@ -33,6 +33,11 @@ $("#form").submit(function () {
       err = true;
       $('#startErr').append('<p>開始時間は現在時刻より後を指定してください</p>');
     }
+    // 終了時間が現在時間より前
+    if (end < new Date()) {
+      err = true;
+      $('#endErr').append('<p>終了時間は現在時刻より後を指定してください</p>');
+    }
     // 終了日時が開始時間より前
     if (end <= start) {
       err = true;
