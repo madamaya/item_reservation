@@ -4,21 +4,24 @@ block content
   h1 物品を利用予約するWebサイト
   if user
     p こんにちは #{user.name} さん
-  if user
+    div
+      a(href=`/users/${user.id}`) 予約一覧
     div
       a(href="/items/new") 物品を追加する
-  h3 物品一覧
-  if user
+    h3 物品一覧
+
     each item in items
       div.my-2.card(style="width: 18rem;")
         h4 #{item.name}
         p #{item.comment}
-        div
-          a(href=`/items/${item.id}/edit`) 物品名，コメントを編集する
+        if user.name==='admin' || user.id === item.createdBy
+          div
+            a(href=`/items/${item.id}/edit`) 物品名，コメントを編集する
         div
           a(href=`/items/${item.id}/reservate`) 予約する
-        div
-          a(href=`/items/${item.id}/delete`) 削除する
+        if user.name==='admin'
+          div
+            a(href=`/items/${item.id}/delete`) 削除する
 
   else
     h2.err ログインしてください

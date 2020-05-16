@@ -43,6 +43,7 @@ Reservation.sync();
 
 var indexRouter = require('./routes/index');
 var itemsRouter = require('./routes/items');
+var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
 
@@ -64,6 +65,7 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/items', itemsRouter);
+app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 

@@ -7,7 +7,7 @@ const Items = require('../models/items');
 router.get('/', function (req, res, next) {
   // console.log('::user::' + JSON.stringify(req.user));
   Items.findAll({
-    attributes: ['id', 'name', 'comment'],
+    attributes: ['id', 'name', 'comment', 'createdBy'],
     where: {
       valid: 1
     },

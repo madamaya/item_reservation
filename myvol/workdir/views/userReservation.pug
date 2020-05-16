@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1 #{user.name} さんの予約一覧
+  if reservations.length
+    each reservation in reservations
+      div.my-2.card(style="width: 18rem;")
+        h4 物品名
+        p #{reservation.itemId}
+        h4 予約開始時間
+        p #{reservation.startTime}
+        h4 予約終了時間
+        p #{reservation.endTime}
+        form(method='post' action=`/items/reservate/${reservation.reservationId}/delete`)
+          div.text-right
+            button.btn-danger(type='submit') 予約を削除する
+
+  else
+    p 予約はありません

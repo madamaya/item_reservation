@@ -45,7 +45,6 @@ $("#form").submit(function () {
     }
   }
   if (!err) {
-    console.log('checking!!!');
     $.ajax({
       url: `/items/${itemId}/reservate/check`,
       type: 'post',
@@ -69,6 +68,6 @@ $("#form").submit(function () {
     // alert('jquery:: err')
     return false;
   }
-
 });
+
 

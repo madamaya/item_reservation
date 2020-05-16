@@ -2,9 +2,9 @@ extends layout
 
 block content
   h1 物品を利用予約するWebサイト
-  h2 物品（#{itemId}）を予約するページ
+  h2 [#{item.name}]を予約するページ
 
-  p #{displayDay}の予約状況
+  p.mt-3 #{displayDay}の予約状況
   button.m-3.btn-info 12時間前
   button.m-3.btn-info 12時間後
 
@@ -21,8 +21,8 @@ block content
         td.reserveTableBoxInter.reserveTableBox
         td.reserveTableBoxLast.reserveTableBox
 
-  form#form(method="post" action=`/items/${itemId}/reservate`)
-    div
+  form#form(method="post" action=`/items/${item.id}/reservate`)
+    div.m-3
       h5 予約開始日時
       div#startErr.err
 
@@ -35,7 +35,7 @@ block content
         option(value="") -
         - for (let i = 0; i < 60; i+=15)
           option(value=`${i}`) #{i}
-    div
+    div.m-3
       h5 予約終了日時
       div#endErr.err
 
@@ -49,12 +49,13 @@ block content
         - for (let i = 0; i < 60; i+=15)
           option(value=`${i}`) #{i}
     div
-      input#itemId(type="hidden" name="itemId" value=itemId)
+      input#itemId(type="hidden" name="itemId" value=item.id)
       input#userId(type="hidden" name="userId" value=user.id)
 
     div#nullErr.err
     div#dupErr.err
-    div
+
+    div.m-3
       button#button(type="submit") 投稿
 
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")

@@ -18,8 +18,12 @@ const Item = loader.database.define('item', {
   createdAt: {
     type: Sequelize.DATE
   },
-  valid: {
+  createdBy: {
     type: Sequelize.INTEGER
+  },
+  valid: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 }, {
   freezeTableName: true,
