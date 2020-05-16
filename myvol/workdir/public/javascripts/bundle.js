@@ -88,8 +88,91 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(1);
+module.exports = __webpack_require__(2);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function deleteErr() {
+  $('#nullErr').empty();
+  $('#startErr').empty();
+  $('#endErr').empty();
+  $('#dupErr').empty();
+}
+
+$("#form").submit(function () {
+  var err = false;
+  var itemId = $('#itemId').val();
+  var startDate = $('#startDate').val();
+  var startTime = $('#startTime').val();
+  var startMin = $('#startMin').val();
+  var endDate = $('#endDate').val();
+  var endTime = $('#endTime').val();
+  var endMin = $('#endMin').val();
+  var start = new Date(startDate + ' ' + startTime + ':' + startMin + ':00');
+  var end = new Date(endDate + ' ' + endTime + ':' + endMin + ':00');
+  var is_null = !startDate || !startTime || !startMin || !endDate || !endTime || !endMin;
+  deleteErr(); // 空値あり
+
+  if (is_null) {
+    err = true;
+    $('#nullErr').append('<p>全ての要素を入力してください</p>');
+  } else {
+    // 開始時間が現在時間より前
+    if (start < new Date()) {
+      err = true;
+      $('#startErr').append('<p>開始時間は現在時刻より後を指定してください</p>');
+    } // 終了日時が開始時間より前
+
+
+    if (end <= start) {
+      err = true;
+      $('#endErr').append('<p>終了時間は開始時間より後を指定してください</p>');
+    }
+  }
+
+  if (!err) {
+    console.log('checking!!!');
+    $.ajax({
+      url: "/items/".concat(itemId, "/reservate/check"),
+      type: 'post',
+      data: {
+        startDate: startDate,
+        startTime: startTime,
+        startMin: startMin,
+        endDate: endDate,
+        endTime: endTime,
+        endMin: endMin
+      },
+      async: false
+    }).done(function (data) {
+      // 重複があるとき
+      // alert(JSON.stringify(data));
+      if (!data["return"]) {
+        err = true;
+        $('#dupErr').append('<p>指定した時間が他の予約と重複しています</p>');
+      }
+    });
+  }
+
+  if (err) {
+    // alert('jquery:: err')
+    return false;
+  }
+});
 
 /***/ })
 /******/ ]);

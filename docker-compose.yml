@@ -24,7 +24,7 @@ services:
       - my-network
     volumes:
       - "./myvol/workdir:/workdir"
-    command: [sh, -c, yarn install && PORT=8000 yarn start]
+    command: [sh, -c, yarn install && npx webpack && PORT=8000 yarn start]
 
 networks:
   my-network:
