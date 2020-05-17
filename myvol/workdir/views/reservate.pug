@@ -1,27 +1,39 @@
 extends layout
 
 block content
-  h1 物品を利用予約するWebサイト
+
   h2 [#{item.name}]を予約するページ
 
-  p.mt-3 #{displayDay}の予約状況
-  button.m-3.btn-info 12時間前
-  button.m-3.btn-info 12時間後
+  h3.mt-3#reservationDay #{displayDay}の予約状況
 
-  table.reserveTable
-    tr
-      - let st = 0
-      - for (let i = st; i < st+24; i++)
-        - const tm = ('00' + String(i)).slice(-2);
-        th.reserveTableHeader(colspan="4") #{tm}:00
-    tr
-      - for (let i = 0; i < 24; i++)
-        td.reserveTableBoxFirst.reserveTableBox
-        td.reserveTableBoxInter.reserveTableBox
-        td.reserveTableBoxInter.reserveTableBox
-        td.reserveTableBoxLast.reserveTableBox
+  input#displayDate(type="date")
+  select#displayTime
+    option(value="") -
+    - for (let i = 0; i < 24; i++)
+      option(value=`${i}`) #{i}
+  | 時
+  button.m-3 表示する
 
-  form#form(method="post" action=`/items/${item.id}/reservate`)
+  div.text-nowrap.table-responsive
+    table.reserveTable
+      tr
+        - let st = 0
+        - for (let i = st; i < st+24; i++)
+          - const tm = ('00' + String(i)).slice(-2);
+          th.reserveTableHeader(colspan="4") #{tm}:00
+      tr
+        - for (let i = 0; i < 24; i++)
+          td.reserveTableBoxFirst.reserveTableBox
+          td.reserveTableBoxInter.reserveTableBox
+          td.reserveTableBoxInter.reserveTableBox
+          td.reserveTableBoxLast.reserveTableBox
+
+
+  button.btn-info 以前のタイムライン
+  button.m-3.btn-info 以後のタイムライン
+
+
+  form.mt-4.card(style="width: 21rem;")#form(method="post" action=`/items/${item.id}/reservate`)
     div.m-3
       h5 予約開始日時
       div#startErr.err
@@ -31,10 +43,12 @@ block content
         option(value="") -
         - for (let i = 0; i < 24; i++)
           option(value=`${i}`) #{i}
+      | 時
       select#startMin(name="startMin")
         option(value="") -
         - for (let i = 0; i < 60; i+=15)
           option(value=`${i}`) #{i}
+      | 分
     div.m-3
       h5 予約終了日時
       div#endErr.err
@@ -44,10 +58,12 @@ block content
         option(value="") -
         - for (let i = 0; i < 24; i++)
           option(value=`${i}`) #{i}
+      | 時
       select#endMin(name="endMin")
         option(value="") -
         - for (let i = 0; i < 60; i+=15)
           option(value=`${i}`) #{i}
+      | 分
     div
       input#itemId(type="hidden" name="itemId" value=item.id)
       input#userId(type="hidden" name="userId" value=user.id)
@@ -56,7 +72,7 @@ block content
     div#dupErr.err
 
     div.m-3
-      button#button(type="submit") 投稿
+      button#button(type="submit") 予約する
 
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
   script(src="/javascripts/bundle.js")

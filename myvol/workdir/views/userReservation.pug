@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1 #{user.name} さんの予約一覧
+  h2 #{user.name} さんの予約一覧
   if reservations.length
     each reservation in reservations
       div.my-2.card(style="width: 18rem;")

@@ -23,6 +23,61 @@ router.get('/:id/edit', isAuthenticated, function (req, res, next) {
   });
 });
 
+router.post('/reservate', isAuthenticated, function (req, res, next) {
+  console.log('hogeho');
+  const itemId = req.body.itemId;
+  const displayStartTime = req.body.displayStartTime;
+  const displayEndTime = req.body.displayEndTime;
+  console.log('===========================');
+  console.log(itemId);
+  console.log(displayStartTime);
+  console.log(displayEndTime);
+  Reservation.findAll({
+    attributes: ['startTime', 'endTime'],
+    where: {
+      [Op.and]: [
+        {
+          itemId:
+            itemId
+        },
+        {
+          [Op.or]: [
+            {
+              [Op.and]: [{
+                startTime: {
+                  [Op.gte]: displayStartTime
+                }
+              },
+              {
+                startTime: {
+                  [Op.lt]: displayEndTime
+                }
+              }]
+            },
+            {
+              [Op.and]: [{
+                endTime: {
+                  [Op.gt]: displayStartTime
+                }
+              },
+              {
+                endTime: {
+                  [Op.lte]: displayEndTime
+                }
+              }]
+            },
+          ]
+        },
+        {
+          valid: 1
+        }
+      ]
+    }
+  }).then((reservations) => {
+    res.json({ reservations });
+  });
+});
+
 router.post('/:id', isAuthenticated, function (req, res, next) {
   Items.upsert({
     id: req.params.id,
@@ -47,7 +102,7 @@ router.get('/:id/delete', isAuthenticated, function (req, res, next) {
 
 router.get('/:id/reservate', isAuthenticated, function (req, res, next) {
   const today = new Date();
-  const displayDay = ('0000' + today.getFullYear()).slice(-4) + '/' + ('00' + today.getMonth()).slice(-2) + '/' + ('00' + today.getDate()).slice(-2);
+  const displayDay = ('0000' + today.getFullYear()).slice(-4) + '/' + ('00' + (today.getMonth() + 1)).slice(-2) + '/' + ('00' + today.getDate()).slice(-2);
   Items.findOne({
     where: {
       id: req.params.id
@@ -56,6 +111,7 @@ router.get('/:id/reservate', isAuthenticated, function (req, res, next) {
     res.render('reservate', { user: req.user, item: item, displayDay });
   });
 });
+
 
 
 
@@ -199,6 +255,7 @@ router.post('/:id/reservate/check', isAuthenticated, function (req, res, next) {
     }
   });
 });
+
 
 
 module.exports = router;

@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  h1 物品を利用予約するWebサイト
   if user
     p こんにちは #{user.name} さん
     div
@@ -18,7 +17,7 @@ block content
           div
             a(href=`/items/${item.id}/edit`) 物品名，コメントを編集する
         div
-          a(href=`/items/${item.id}/reservate`) 予約する
+          a(href=`/items/${item.id}/reservate`) 詳細・予約する
         if user.name==='admin'
           div
             a(href=`/items/${item.id}/delete`) 削除する

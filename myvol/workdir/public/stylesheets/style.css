@@ -13,31 +13,36 @@ a {
 
 .reserveTable {
   border-collapse: collapse;
-  border: 1px black solid;
+  /* border: 1px black solid; */
   table-layout: fixed;
+  width: 100%;
 }
 
 .reserveTableHeader {
   border-collapse: collapse;
-  border: 1px black solid;
-  width: 50px;
+  text-align: center;
+  font-size: 13px;
+  color: gray;
+  width: 60px;
   height: 10px;
 }
 
 .reserveTableBoxFirst {
   border-collapse: collapse;
-  border: 1px black dotted;
-  border-left: 1px black solid;
-  height: 20px;
+  border: 1px black solid;
+  border-right: 1px black dotted;
+  height: 50px;
 }
 
 .reserveTableBoxInter {
   border-collapse: collapse;
-  border: 1px black dotted;
+  border: 1px black solid;
+  border-left: 1px black dotted;
+  border-right: 1px black dotted;
 }
 
 .reserveTableBoxLast {
   border-collapse: collapse;
-  border: 1px black dotted;
-  border-right: 1px black solid;
+  border: 1px black solid;
+  border-left: 1px black dotted;
 }
