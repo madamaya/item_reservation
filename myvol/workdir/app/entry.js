@@ -11,9 +11,13 @@ function nextTime(time) {
 }
 
 function reservateTableBox(itemId, displayStartTime, displayEndTime) {
+  const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   $.ajax({
     url: '/items/reservate',
     type: 'post',
+    headers: {
+      'CSRF-Token': token
+    },
     data: {
       itemId,
       displayStartTime,
@@ -53,6 +57,7 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
 }
 
 $(window).on('load', () => {
+
   const path = location.pathname;
   const today = new Date();
   const displayStartTime = ('0000' + today.getFullYear()).slice(-4) + '-' + ('00' + (today.getMonth() + 1)).slice(-2) + '-' + ('00' + today.getDate()).slice(-2) + ' 00:00:00';

@@ -113,9 +113,13 @@ function nextTime(time) {
 }
 
 function reservateTableBox(itemId, displayStartTime, displayEndTime) {
+  var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
     url: '/items/reservate',
     type: 'post',
+    headers: {
+      'CSRF-Token': token
+    },
     data: {
       itemId: itemId,
       displayStartTime: displayStartTime,
@@ -11109,9 +11113,14 @@ $("#form").submit(function () {
   }
 
   if (!err) {
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    console.log(token);
     $.ajax({
       url: "/items/".concat(itemId, "/reservate/check"),
       type: 'post',
+      headers: {
+        'CSRF-Token': token
+      },
       data: {
         startDate: startDate,
         startTime: startTime,

@@ -3,6 +3,7 @@ html
   head
     title=title
     meta(charset="utf-8")
+    meta(name="csrf-token" content=csrfToken)
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous")
   body
@@ -12,7 +13,7 @@ html
       a(href="/logout") ログアウトする
     else
       a(href="/login") ログインする
-    h1 物品を利用予約するWebサイト
+    h1 物品の利用予約をするWebサイト
     hr
     block content
 

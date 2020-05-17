@@ -5,9 +5,11 @@ const loader = require('../models/sequelize-loader');
 const Sequelize = loader.Sequelize;
 const Op = Sequelize.Op;
 const Reservation = require('../models/reservation');
+const csrf = require('csurf');
+const csrfProtection = csrf({ cookie: true });
 
 /* GET home page. */
-router.get('/:userId', isAuthenticated, function (req, res, next) {
+router.get('/:userId', isAuthenticated, csrfProtection, function (req, res, next) {
   // req.params.userIdとログインしている人が同一か判定
   console.log('req.user=' + JSON.stringify(req.user));
   if (parseInt(req.params.userId) !== req.user.id) {
@@ -38,7 +40,7 @@ router.get('/:userId', isAuthenticated, function (req, res, next) {
     order: [['startTime', 'ASC']]
   }).then((reservations) => {
     console.log('users.js::' + JSON.stringify(reservations));
-    res.render('userReservation', { user: req.user, reservations });
+    res.render('userReservation', { user: req.user, reservations, csrfToken: req.csrfToken() });
     // res.redirect('/');
   });
 

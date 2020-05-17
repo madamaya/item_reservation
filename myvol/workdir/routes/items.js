@@ -7,23 +7,25 @@ const Op = Sequelize.Op;
 const Items = require('../models/items');
 const Reservation = require('../models/reservation');
 const uuid = require('uuid');
+const csrf = require('csurf');
+const csrfProtection = csrf({ cookie: true });
 
 /* GET home page. */
-router.get('/new', isAuthenticated, function (req, res, next) {
-  res.render('new', { userId: req.user.id });
+router.get('/new', isAuthenticated, csrfProtection, function (req, res, next) {
+  res.render('new', { userId: req.user.id, csrfToken: req.csrfToken() });
 });
 
-router.get('/:id/edit', isAuthenticated, function (req, res, next) {
+router.get('/:id/edit', isAuthenticated, csrfProtection, function (req, res, next) {
   Items.findOne({
     where: {
       id: req.params.id
     }
   }).then((item) => {
-    res.render('edit', { id: item.id, name: item.name, comment: item.comment, user: req.user });
+    res.render('edit', { id: item.id, name: item.name, comment: item.comment, user: req.user, csrfToken: req.csrfToken() });
   });
 });
 
-router.post('/reservate', isAuthenticated, function (req, res, next) {
+router.post('/reservate', isAuthenticated, csrfProtection, function (req, res, next) {
   console.log('hogeho');
   const itemId = req.body.itemId;
   const displayStartTime = req.body.displayStartTime;
@@ -78,7 +80,7 @@ router.post('/reservate', isAuthenticated, function (req, res, next) {
   });
 });
 
-router.post('/:id', isAuthenticated, function (req, res, next) {
+router.post('/:id', isAuthenticated, csrfProtection, function (req, res, next) {
   Items.upsert({
     id: req.params.id,
     name: req.body.name,
@@ -90,7 +92,7 @@ router.post('/:id', isAuthenticated, function (req, res, next) {
   });
 });
 
-router.get('/:id/delete', isAuthenticated, function (req, res, next) {
+router.post('/:id/delete', isAuthenticated, csrfProtection, function (req, res, next) {
   const id = req.params.id;
   Items.update({ valid: 0 }, {
     where: {
@@ -100,7 +102,7 @@ router.get('/:id/delete', isAuthenticated, function (req, res, next) {
   res.redirect('/');
 });
 
-router.get('/:id/reservate', isAuthenticated, function (req, res, next) {
+router.get('/:id/reservate', isAuthenticated, csrfProtection, function (req, res, next) {
   const today = new Date();
   const displayDay = ('0000' + today.getFullYear()).slice(-4) + '/' + ('00' + (today.getMonth() + 1)).slice(-2) + '/' + ('00' + today.getDate()).slice(-2);
   Items.findOne({
@@ -108,14 +110,14 @@ router.get('/:id/reservate', isAuthenticated, function (req, res, next) {
       id: req.params.id
     }
   }).then((item) => {
-    res.render('reservate', { user: req.user, item: item, displayDay });
+    res.render('reservate', { user: req.user, item: item, displayDay, csrfToken: req.csrfToken() });
   });
 });
 
 
 
 
-router.post('/reservate/:reservationId/delete', isAuthenticated, function (req, res, next) {
+router.post('/reservate/:reservationId/delete', isAuthenticated, csrfProtection, function (req, res, next) {
   const reservationId = req.params.reservationId;
   Reservation.update({ valid: 0 }, {
     where: {
@@ -164,7 +166,7 @@ function noDuplicationTime(itemId, st, ed) {
   });
 }
 
-router.post('/:id/reservate', isAuthenticated, function (req, res, next) {
+router.post('/:id/reservate', isAuthenticated, csrfProtection, function (req, res, next) {
   const resId = uuid.v4();
   const stTime = req.body.startDate + ' ' + ('00' + req.body.startTime).slice(-2) + ':' + ('00' + req.body.startMin).slice(-2) + ':00';
   const edTime = req.body.endDate + ' ' + ('00' + req.body.endTime).slice(-2) + ':' + ('00' + req.body.endMin).slice(-2) + ':00';
@@ -202,7 +204,7 @@ router.post('/:id/reservate', isAuthenticated, function (req, res, next) {
   // res.redirect('/');
 });
 
-router.post('/', isAuthenticated, function (req, res, next) {
+router.post('/', isAuthenticated, csrfProtection, function (req, res, next) {
   const id = uuid.v4();
   const date = new Date();
   // console.log(req.body);
@@ -218,7 +220,7 @@ router.post('/', isAuthenticated, function (req, res, next) {
   });
 });
 
-router.post('/:id/reservate/check', isAuthenticated, function (req, res, next) {
+router.post('/:id/reservate/check', isAuthenticated, csrfProtection, function (req, res, next) {
   const itemId = req.params.id;
   const st = req.body.startDate + ' ' + ('00' + req.body.startTime).slice(-2) + ':' + ('00' + req.body.startMin).slice(-2) + ':00';
   const ed = req.body.endDate + ' ' + ('00' + req.body.endTime).slice(-2) + ':' + ('00' + req.body.endMin).slice(-2) + ':00';

@@ -2,9 +2,11 @@ var express = require('express');
 var router = express.Router();
 var isAuthenticated = require('./isAuthenticated');
 const Items = require('../models/items');
+const csrf = require('csurf');
+const csrfProtection = csrf({ cookie: true });
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', csrfProtection, function (req, res, next) {
   // console.log('::user::' + JSON.stringify(req.user));
   if (req.user) {
     Items.findAll({
@@ -14,7 +16,7 @@ router.get('/', function (req, res, next) {
       },
       order: [['createdAt', 'DESC']]
     }).then((items) => {
-      res.render('index', { title: 'Express', items: items, user: req.user });
+      res.render('index', { title: 'Express', items: items, user: req.user, csrfToken: req.csrfToken() });
     });
   } else {
     res.render('index', { title: 'Express' });

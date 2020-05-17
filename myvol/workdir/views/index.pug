@@ -20,7 +20,8 @@ block content
           a(href=`/items/${item.id}/reservate`) 詳細・予約する
         if user.name==='admin'
           div
-            a(href=`/items/${item.id}/delete`) 削除する
+          form(method='post' action=`/items/${item.id}/delete`)
+            button.btm-danger(type='submit') 削除する
 
   else
     h2.err ログインしてください

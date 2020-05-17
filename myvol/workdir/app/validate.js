@@ -45,9 +45,14 @@ $("#form").submit(function () {
     }
   }
   if (!err) {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    console.log(token);
     $.ajax({
       url: `/items/${itemId}/reservate/check`,
       type: 'post',
+      headers: {
+        'CSRF-Token': token
+      },
       data: {
         startDate, startTime, startMin, endDate, endTime, endMin
       },

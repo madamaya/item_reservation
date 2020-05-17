@@ -1,0 +1,9 @@
+{
+  "name": "item-reservator",
+  "description": "物品の利用予約をするWebサイト",
+  "logo": "",
+  "keywords": [
+    "node"
+  ],
+  "image": "heroku/nodejs"
+}
