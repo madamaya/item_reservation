@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var isAuthenticated = require('./isAuthenticated');
+const Users = require('../models/user');
 const Items = require('../models/items');
 const csrf = require('csurf');
 const csrfProtection = csrf({ cookie: true });
