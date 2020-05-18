@@ -43,15 +43,19 @@ router.get('/', isAuthenticated, csrfProtection, function (req, res, next) {
   })
     .then((reservations) => {
       Items.findAll({
-        attributes: ['id', 'name']
+        attributes: ['id', 'name', 'comment']
       })
         .then((items) => {
-          const mp = new Map();
+          const mp_id_name = new Map();
+          const mp_id_comment = new Map();
           for (let i = 0; i < items.length; i++) {
-            mp.set(items[i].id, items[i].name);
+            mp_id_name.set(items[i].id, items[i].name);
+            mp_id_comment.set(items[i].id, items[i].comment);
           }
+
           for (let i = 0; i < reservations.length; i++) {
-            reservations[i].itemName = mp.get(reservations[i].itemId);
+            reservations[i].itemName = mp_id_name.get(reservations[i].itemId);
+            reservations[i].comment = mp_id_comment.get(reservations[i].itemId);
           }
           // reservations.mp = mp;
           console.log('reservations::' + JSON.stringify(reservations));

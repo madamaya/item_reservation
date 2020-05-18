@@ -180,10 +180,10 @@ function reservateTableBox(itemId, now, displayStartTime, displayEndTime) {
     for (var _i2 = 0; _i2 < 24; _i2++) {
       if (_i2 === 0) {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayHeaderDay".concat(_i2)).text(displayStartMonth + '/' + displayStartDay);
-      }
-
-      if ((_i2 + displayStartHours) % 24 === 0 && _i2 !== 0) {
+      } else if ((_i2 + displayStartHours) % 24 === 0) {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayHeaderDay".concat(_i2)).text(displayEndMonth + '/' + displayEndDay);
+      } else {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayHeaderDay".concat(_i2)).empty();
       }
 
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayHeaderHours".concat(_i2)).text(('00' + String((_i2 + displayStartHours) % 24)).slice(-2) + ':00');
@@ -201,19 +201,40 @@ function reservateTableBox(itemId, now, displayStartTime, displayEndTime) {
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).on('load', function () {
   var path = location.pathname;
-  var today = new Date();
-  var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-  var now = parseTime(today);
-  var displayStartTime = make0Min(parseTime(today));
-  console.log(displayStartTime);
-  var displayEndTime = make0Min(parseTime(tomorrow));
   var flag = path.match(/^\/items\/(.*-.*-.*-.*-.*)\/reservate$/);
 
   if (flag) {
+    var today = new Date();
+    var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+    var now = parseTime(today);
+    var displayStartTime = make0Min(parseTime(today));
+    console.log(displayStartTime);
+    var displayEndTime = make0Min(parseTime(tomorrow));
     var itemId = flag[1]; // console.log('itemId=' + itemId);
 
     reservateTableBox(itemId, now, displayStartTime, displayEndTime);
     console.log(displayStartTime.split(' ')[0]);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDay').val(displayStartTime.split(' ')[0]);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayTimeOption".concat(displayStartTime.split(' ')[1].split(':')[0])).prop('selected', true);
+  }
+});
+var displaySpecifiedTime = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displaySpecifiedTime');
+displaySpecifiedTime.on('click', function () {
+  var itemId = displaySpecifiedTime.data('item-id');
+  var displayDate = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDate').val();
+  var displayTime = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayTime').val();
+
+  if (displayDate && displayTime) {
+    var now = parseTime(new Date());
+    var st = new Date(displayDate.split('-')[0], parseInt(displayDate.split('-')[1] - 1), displayDate.split('-')[2], displayTime);
+    var displayStartTime = make0Min(parseTime(st));
+    var displayEndTime = make0Min(parseTime(new Date(st.getTime() + 24 * 60 * 60 * 1000)));
+    console.log(itemId);
+    console.log(displayDate);
+    console.log(displayTime);
+    console.log(displayStartTime);
+    console.log(displayEndTime);
+    reservateTableBox(itemId, now, displayStartTime, displayEndTime);
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDay').val(displayStartTime.split(' ')[0]);
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayTimeOption".concat(displayStartTime.split(' ')[1].split(':')[0])).prop('selected', true);
   }

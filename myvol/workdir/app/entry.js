@@ -70,9 +70,10 @@ function reservateTableBox(itemId, now, displayStartTime, displayEndTime) {
     for (let i = 0; i < 24; i++) {
       if (i === 0) {
         $(`#displayHeaderDay${i}`).text(displayStartMonth + '/' + displayStartDay);
-      }
-      if (((i + displayStartHours) % 24) === 0 && i !== 0) {
+      } else if (((i + displayStartHours) % 24) === 0) {
         $(`#displayHeaderDay${i}`).text(displayEndMonth + '/' + displayEndDay);
+      } else {
+        $(`#displayHeaderDay${i}`).empty();
       }
       $(`#displayHeaderHours${i}`).text(('00' + String((i + displayStartHours) % 24)).slice(-2) + ':00');
 
@@ -90,21 +91,45 @@ function reservateTableBox(itemId, now, displayStartTime, displayEndTime) {
 $(window).on('load', () => {
 
   const path = location.pathname;
-  const today = new Date();
-  const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-  const now = parseTime(today);
-  const displayStartTime = make0Min(parseTime(today));
-  console.log(displayStartTime);
-  const displayEndTime = make0Min(parseTime(tomorrow));
-
   const flag = path.match(/^\/items\/(.*-.*-.*-.*-.*)\/reservate$/);
   if (flag) {
+    const today = new Date();
+    const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+    const now = parseTime(today);
+    const displayStartTime = make0Min(parseTime(today));
+    console.log(displayStartTime);
+    const displayEndTime = make0Min(parseTime(tomorrow));
+
     const itemId = flag[1];
     // console.log('itemId=' + itemId);
     reservateTableBox(itemId, now, displayStartTime, displayEndTime);
-    console.log(displayStartTime.split(' ')[0]);
+    // console.log(displayStartTime.split(' ')[0]);
     $('#displayDay').val(displayStartTime.split(' ')[0]);
     $(`#displayTimeOption${displayStartTime.split(' ')[1].split(':')[0]}`).prop('selected', true);
   }
 });
+
+
+const displaySpecifiedTime = $('#displaySpecifiedTime');
+displaySpecifiedTime.on('click', () => {
+  const itemId = displaySpecifiedTime.data('item-id');
+  const displayDate = $('#displayDate').val();
+  const displayTime = $('#displayTime').val();
+  if (itemId && displayDate && displayTime) {
+    const now = parseTime(new Date());
+    const st = new Date(displayDate.split('-')[0], parseInt(displayDate.split('-')[1] - 1), displayDate.split('-')[2], displayTime);
+    const displayStartTime = make0Min(parseTime(st));
+    const displayEndTime = make0Min(parseTime(new Date(st.getTime() + 24 * 60 * 60 * 1000)));
+
+    // console.log(itemId);
+    // console.log(displayDate);
+    // console.log(displayTime);
+    // console.log(displayStartTime);
+    // console.log(displayEndTime);
+
+    reservateTableBox(itemId, now, displayStartTime, displayEndTime);
+    $('#displayDay').val(displayStartTime.split(' ')[0]);
+    $(`#displayTimeOption${displayStartTime.split(' ')[1].split(':')[0]}`).prop('selected', true);
+  }
+})
 
