@@ -171,8 +171,9 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).on('load', function () {
   var path = location.pathname;
   var today = new Date();
+  var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
   var displayStartTime = ('0000' + today.getFullYear()).slice(-4) + '-' + ('00' + (today.getMonth() + 1)).slice(-2) + '-' + ('00' + today.getDate()).slice(-2) + ' 00:00:00';
-  var displayEndTime = ('0000' + today.getFullYear()).slice(-4) + '-' + ('00' + (today.getMonth() + 1)).slice(-2) + '-' + ('00' + (today.getDate() + 1)).slice(-2) + ' 00:00:00';
+  var displayEndTime = ('0000' + tomorrow.getFullYear()).slice(-4) + '-' + ('00' + (tomorrow.getMonth() + 1)).slice(-2) + '-' + ('00' + tomorrow.getDate()).slice(-2) + ' 00:00:00';
   var flag = path.match(/^\/items\/(.*-.*-.*-.*-.*)\/reservate$/);
 
   if (flag) {

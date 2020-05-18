@@ -4,6 +4,7 @@ const isAuthenticated = require('./isAuthenticated');
 const loader = require('../models/sequelize-loader');
 const Sequelize = loader.Sequelize;
 const Op = Sequelize.Op;
+const Items = require('../models/items');
 const Reservation = require('../models/reservation');
 const csrf = require('csurf');
 const csrfProtection = csrf({ cookie: true });
@@ -39,11 +40,25 @@ router.get('/', isAuthenticated, csrfProtection, function (req, res, next) {
       ]
     },
     order: [['startTime', 'ASC']]
-  }).then((reservations) => {
-    console.log('users.js::' + JSON.stringify(reservations));
-    res.render('userReservation', { title, user: req.user, reservations, csrfToken: req.csrfToken() });
-    // res.redirect('/');
-  });
+  })
+    .then((reservations) => {
+      Items.findAll({
+        attributes: ['id', 'name']
+      })
+        .then((items) => {
+          const mp = new Map();
+          for (let i = 0; i < items.length; i++) {
+            mp.set(items[i].id, items[i].name);
+          }
+          for (let i = 0; i < reservations.length; i++) {
+            reservations[i].itemName = mp.get(reservations[i].itemId);
+          }
+          // reservations.mp = mp;
+          console.log('reservations::' + JSON.stringify(reservations));
+          res.render('userReservation', { title, user: req.user, reservations, csrfToken: req.csrfToken() });
+          // res.redirect('/');
+        });
+    });
 
 });
 
