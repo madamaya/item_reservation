@@ -105,14 +105,31 @@ __webpack_require__.r(__webpack_exports__);
 
 var global = Function('return this;')();
 global.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a; // import bootstrap from 'bootstrap';
-// 引数：'2020-01-01 00:00:00'の形式
+
+function make0Min(time) {
+  var dayTime = time.split(' ');
+  var day = dayTime[0];
+  var hours = dayTime[1].split(':')[0];
+  var minutes = dayTime[1].split(':')[1];
+  var sec = dayTime[1].split(':')[2];
+  return day + ' ' + hours + ':00:00';
+}
+
+function parseTime(time) {
+  return ('0000' + time.getFullYear()).slice(-4) + '-' + ('00' + (time.getMonth() + 1)).slice(-2) + '-' + ('00' + time.getDate()).slice(-2) + ' ' + ('00' + time.getHours()).slice(-2) + ':' + ('00' + time.getMinutes()).slice(-2) + ':00';
+}
+
+function parseUTCTime(time) {
+  return ('0000' + time.getUTCFullYear()).slice(-4) + '-' + ('00' + (time.getUTCMonth() + 1)).slice(-2) + '-' + ('00' + time.getUTCDate()).slice(-2) + ' ' + ('00' + time.getUTCHours()).slice(-2) + ':' + ('00' + time.getUTCMinutes()).slice(-2) + ':00';
+} // 引数：'2020-01-01 00:00:00'の形式
+
 
 function nextTime(time) {
   var after15min = new Date(new Date(time).getTime() + 15 * 60 * 1000);
-  return ('0000' + after15min.getFullYear()).slice(-4) + '-' + ('00' + (after15min.getMonth() + 1)).slice(-2) + '-' + ('00' + after15min.getDate()).slice(-2) + ' ' + ('00' + after15min.getHours()).slice(-2) + ':' + ('00' + after15min.getMinutes()).slice(-2) + ':00';
+  return parseTime(after15min);
 }
 
-function reservateTableBox(itemId, displayStartTime, displayEndTime) {
+function reservateTableBox(itemId, now, displayStartTime, displayEndTime) {
   var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
     url: '/items/reservate',
@@ -141,8 +158,7 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
       }
     }
 
-    var retList = [];
-    var now = new Date(); // console.log('st=' + displayStartTime + ' ed=' + displayEndTime);
+    var retList = []; // console.log('st=' + displayStartTime + ' ed=' + displayEndTime);
 
     for (var _i = displayStartTime; _i < displayEndTime; _i = nextTime(_i)) {
       // console.log(':' + i);
@@ -153,6 +169,24 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
       } else {
         retList.push(1);
       }
+    }
+
+    var displayStartMonth = parseInt(displayStartTime.split(' ')[0].split('-')[1]);
+    var displayStartDay = parseInt(displayStartTime.split(' ')[0].split('-')[2]);
+    var displayEndMonth = parseInt(displayEndTime.split(' ')[0].split('-')[1]);
+    var displayEndDay = parseInt(displayEndTime.split(' ')[0].split('-')[2]);
+    var displayStartHours = parseInt(displayStartTime.split(' ')[1].split(':')[0]);
+
+    for (var _i2 = 0; _i2 < 24; _i2++) {
+      if (_i2 === 0) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayHeaderDay".concat(_i2)).text(displayStartMonth + '/' + displayStartDay);
+      }
+
+      if ((_i2 + displayStartHours) % 24 === 0 && _i2 !== 0) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayHeaderDay".concat(_i2)).text(displayEndMonth + '/' + displayEndDay);
+      }
+
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayHeaderHours".concat(_i2)).text(('00' + String((_i2 + displayStartHours) % 24)).slice(-2) + ':00');
     } // console.log(reservatedList);
     // console.log(retList);
 
@@ -168,15 +202,20 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).on('load', function () {
   var path = location.pathname;
   var today = new Date();
-  var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-  var displayStartTime = ('0000' + today.getFullYear()).slice(-4) + '-' + ('00' + (today.getMonth() + 1)).slice(-2) + '-' + ('00' + today.getDate()).slice(-2) + ' 00:00:00';
-  var displayEndTime = ('0000' + tomorrow.getFullYear()).slice(-4) + '-' + ('00' + (tomorrow.getMonth() + 1)).slice(-2) + '-' + ('00' + tomorrow.getDate()).slice(-2) + ' 00:00:00';
+  var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+  var now = parseTime(today);
+  var displayStartTime = make0Min(parseTime(today));
+  console.log(displayStartTime);
+  var displayEndTime = make0Min(parseTime(tomorrow));
   var flag = path.match(/^\/items\/(.*-.*-.*-.*-.*)\/reservate$/);
 
   if (flag) {
     var itemId = flag[1]; // console.log('itemId=' + itemId);
 
-    reservateTableBox(itemId, displayStartTime, displayEndTime);
+    reservateTableBox(itemId, now, displayStartTime, displayEndTime);
+    console.log(displayStartTime.split(' ')[0]);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDay').val(displayStartTime.split(' ')[0]);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayTimeOption".concat(displayStartTime.split(' ')[1].split(':')[0])).prop('selected', true);
   }
 });
 

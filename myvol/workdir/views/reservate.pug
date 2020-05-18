@@ -3,24 +3,32 @@ extends layout
 block content
 
   h2 [#{item.name}]を予約するページ
+  - const dDay = displayDay.split(' ')[0];
+  - const dTime = displayDay.split(' ')[1];
 
-  h3.mt-3#reservationDay #{displayDay}の予約状況
+  h3.mt-5#reservationDay 予約状況
 
-  input#displayDate(type="date")
+  input#displayDay(type="date")
   select#displayTime
-    option(value="") -
     - for (let i = 0; i < 24; i++)
-      option(value=`${i}`) #{i}
+      //- if i !== parseInt(dTime)
+      option(value=`${i}` id=`displayTimeOption${i}`) #{i}
+      //- else
+        //- option(value=`${i}` selected) #{i}
+
   | 時
   button.m-3(disabled) 表示する(未)
+
+
 
   div.text-nowrap.table-responsive
     table.reserveTable
       tr
-        - let st = 0
-        - for (let i = st; i < st+24; i++)
-          - const tm = ('00' + String(i)).slice(-2);
-          th.reserveTableHeader(colspan="4") #{tm}:00
+        - for (let i = 0; i < 24; i++)
+          th.reserveTableHeader(colspan="4" id=`displayHeaderDay${i}`)
+      tr
+        - for (let i = 0; i < 24; i++)
+          th.reserveTableHeader(colspan="4" id=`displayHeaderHours${i}`)
       tr
         - for (let i = 0; i < 24; i++)
           td.reserveTableBoxFirst.reserveTableBox
@@ -28,6 +36,21 @@ block content
           td.reserveTableBoxInter.reserveTableBox
           td.reserveTableBoxLast.reserveTableBox
 
+  table.m-2.text-nowrap
+    tr
+      td.tableLegend.table-info
+      td
+        pre 予約可　
+      td.tableLegend.table-danger
+      td
+        pre すでに予約あり　
+      td.tableLegend.table-active
+      td
+        pre 予約不可
+      //- div(style="width:10px; height:10px;").table-active
+      //-   span hello
+      //- div(style="width:10px; height:10px;").table-info
+      //- div(style="width:10px; height:10px;").table-danger
 
   button.btn-info(disabled) 以前のタイムライン(未)
   button.m-3.btn-info(disabled) 以後のタイムライン(未)
@@ -77,3 +100,4 @@ block content
 
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
   script(src="/javascripts/bundle.js")
+  //- script(src="/javascripts/entry.js")

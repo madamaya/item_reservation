@@ -105,7 +105,7 @@ router.post('/:id/delete', isAuthenticated, csrfProtection, function (req, res, 
 
 router.get('/:id/reservate', isAuthenticated, csrfProtection, function (req, res, next) {
   const today = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
-  const displayDay = ('0000' + today.getFullYear()).slice(-4) + '/' + ('00' + (today.getMonth() + 1)).slice(-2) + '/' + ('00' + today.getDate()).slice(-2);
+  const displayDay = ('0000' + today.getFullYear()).slice(-4) + '-' + ('00' + (today.getMonth() + 1)).slice(-2) + '-' + ('00' + today.getDate()).slice(-2) + ' ' + ('00' + today.getHours()).slice(-2);
   Items.findOne({
     where: {
       id: req.params.id
