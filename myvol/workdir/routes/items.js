@@ -13,7 +13,7 @@ const csrfProtection = csrf({ cookie: true });
 
 /* GET home page. */
 router.get('/new', isAuthenticated, csrfProtection, function (req, res, next) {
-  res.render('new', { title, userId: req.user.id, csrfToken: req.csrfToken() });
+  res.render('new', { title, userId: req.user.id, user: req.user, csrfToken: req.csrfToken() });
 });
 
 router.get('/:id/edit', isAuthenticated, csrfProtection, function (req, res, next) {

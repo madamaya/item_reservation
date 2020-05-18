@@ -34,7 +34,8 @@ git clone git@github.com:masaya-YAMADA/item_reservation.git
 cd ./item_reservation
 docker-compose up --build
 ```
-Dockerのコンテナが起動したら <http://localhost:8000> にアクセスしてください．
+コンソールに`$ node ./bin/www`が表示され，SQLが実行されたらサーバの起動が完了しています．
+サーバが起動したら <http://localhost:8000> にアクセスしてください．
 
 # 今後の予定
 issueに順次対応する予定です．
