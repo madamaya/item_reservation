@@ -24,30 +24,30 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
       displayEndTime
     }
   }).done((data) => {
-    console.log('===entryjs===');
-    console.log(JSON.stringify(data));
+    // console.log('===entryjs===');
+    // console.log(JSON.stringify(data));
     const reservations = data.reservations;
-    console.log(JSON.stringify(reservations));
+    // console.log(JSON.stringify(reservations));
     const classList = ['table-info', 'table-danger', 'table-active'];
     let reservatedList = [];
     for (let i = 0; i < reservations.length; i++) {
-      console.log(reservations[i].startTime + ',' + reservations[i].endTime);
+      // console.log(reservations[i].startTime + ',' + reservations[i].endTime);
       for (let j = reservations[i].startTime; j < reservations[i].endTime; j = nextTime(j)) {
-        console.log(j);
+        // console.log(j);
         reservatedList.push(j);
       }
     }
     let retList = [];
     const now = new Date();
-    console.log('st=' + displayStartTime + ' ed=' + displayEndTime);
+    // console.log('st=' + displayStartTime + ' ed=' + displayEndTime);
     for (let i = displayStartTime; i < displayEndTime; i = nextTime(i)) {
-      console.log(':' + i);
+      // console.log(':' + i);
       if (now >= i) { retList.push(2); }
       else if (reservatedList.indexOf(i) === -1) { retList.push(0); }
       else { retList.push(1); }
     }
-    console.log(reservatedList);
-    console.log(retList);
+    // console.log(reservatedList);
+    // console.log(retList);
     $('.reserveTableBox').each((i, e) => {
       const box = $(e);
       // box.text(i);
@@ -67,7 +67,7 @@ $(window).on('load', () => {
   const flag = path.match(/^\/items\/(.*-.*-.*-.*-.*)\/reservate$/);
   if (flag) {
     const itemId = flag[1];
-    console.log('itemId=' + itemId);
+    // console.log('itemId=' + itemId);
     reservateTableBox(itemId, displayStartTime, displayEndTime);
   }
 });

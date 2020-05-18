@@ -126,29 +126,26 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
       displayEndTime: displayEndTime
     }
   }).done(function (data) {
-    console.log('===entryjs===');
-    console.log(JSON.stringify(data));
-    var reservations = data.reservations;
-    console.log(JSON.stringify(reservations));
+    // console.log('===entryjs===');
+    // console.log(JSON.stringify(data));
+    var reservations = data.reservations; // console.log(JSON.stringify(reservations));
+
     var classList = ['table-info', 'table-danger', 'table-active'];
     var reservatedList = [];
 
     for (var i = 0; i < reservations.length; i++) {
-      console.log(reservations[i].startTime + ',' + reservations[i].endTime);
-
+      // console.log(reservations[i].startTime + ',' + reservations[i].endTime);
       for (var j = reservations[i].startTime; j < reservations[i].endTime; j = nextTime(j)) {
-        console.log(j);
+        // console.log(j);
         reservatedList.push(j);
       }
     }
 
     var retList = [];
-    var now = new Date();
-    console.log('st=' + displayStartTime + ' ed=' + displayEndTime);
+    var now = new Date(); // console.log('st=' + displayStartTime + ' ed=' + displayEndTime);
 
     for (var _i = displayStartTime; _i < displayEndTime; _i = nextTime(_i)) {
-      console.log(':' + _i);
-
+      // console.log(':' + i);
       if (now >= _i) {
         retList.push(2);
       } else if (reservatedList.indexOf(_i) === -1) {
@@ -156,10 +153,10 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
       } else {
         retList.push(1);
       }
-    }
+    } // console.log(reservatedList);
+    // console.log(retList);
 
-    console.log(reservatedList);
-    console.log(retList);
+
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('.reserveTableBox').each(function (i, e) {
       var box = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e); // box.text(i);
 
@@ -177,8 +174,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).on('load', function () {
   var flag = path.match(/^\/items\/(.*-.*-.*-.*-.*)\/reservate$/);
 
   if (flag) {
-    var itemId = flag[1];
-    console.log('itemId=' + itemId);
+    var itemId = flag[1]; // console.log('itemId=' + itemId);
+
     reservateTableBox(itemId, displayStartTime, displayEndTime);
   }
 });

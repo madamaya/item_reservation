@@ -129,7 +129,7 @@ router.post('/reservate/:reservationId/delete', isAuthenticated, csrfProtection,
     console.log('redTo=' + redTo);
     res.redirect(redTo);
   });
-})
+});
 
 function noDuplicationTime(itemId, st, ed) {
   return new Promise((resolve, reject) => {
