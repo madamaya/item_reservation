@@ -27,5 +27,5 @@ herokuにデプロイしたもの → <https://mighty-crag-47595.herokuapp.com/>
 * 全ての物品の物品名とコメントの編集
 
 # 今後の予定
-* ユーザの追加，削除機能の追加
-* 予約ページの予約バーについて，指定した時間の予約バーを表示する機能の追加
+issueに順次対応する予定です．[Issues]: https://github.com/masaya-YAMADA/item_reservation/issues
+
