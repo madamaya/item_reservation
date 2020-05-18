@@ -32,7 +32,7 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
     let reservatedList = [];
     for (let i = 0; i < reservations.length; i++) {
       console.log(reservations[i].startTime + ',' + reservations[i].endTime);
-      for (let j = reservations[i].startTime; j <= reservations[i].endTime; j = nextTime(j)) {
+      for (let j = reservations[i].startTime; j < reservations[i].endTime; j = nextTime(j)) {
         console.log(j);
         reservatedList.push(j);
       }

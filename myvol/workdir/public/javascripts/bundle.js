@@ -136,7 +136,7 @@ function reservateTableBox(itemId, displayStartTime, displayEndTime) {
     for (var i = 0; i < reservations.length; i++) {
       console.log(reservations[i].startTime + ',' + reservations[i].endTime);
 
-      for (var j = reservations[i].startTime; j <= reservations[i].endTime; j = nextTime(j)) {
+      for (var j = reservations[i].startTime; j < reservations[i].endTime; j = nextTime(j)) {
         console.log(j);
         reservatedList.push(j);
       }

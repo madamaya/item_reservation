@@ -14,7 +14,7 @@ block content
         form(method='post' action=`/items/reservate/${reservation.reservationId}/delete`)
           div.text-right
             input(type="hidden" name="_csrf" value!=csrfToken)
-            button.btn-danger(type='submit') 予約を削除する
+            button.m-1.btn-danger(type='submit') 予約を削除する
 
   else
     p 予約はありません

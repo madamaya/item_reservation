@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var isAuthenticated = require('./isAuthenticated');
+const title = require('./title');
 const loader = require('../models/sequelize-loader');
 const Sequelize = loader.Sequelize;
 const Op = Sequelize.Op;
@@ -12,7 +13,7 @@ const csrfProtection = csrf({ cookie: true });
 
 /* GET home page. */
 router.get('/new', isAuthenticated, csrfProtection, function (req, res, next) {
-  res.render('new', { userId: req.user.id, csrfToken: req.csrfToken() });
+  res.render('new', { title, userId: req.user.id, csrfToken: req.csrfToken() });
 });
 
 router.get('/:id/edit', isAuthenticated, csrfProtection, function (req, res, next) {
@@ -21,7 +22,7 @@ router.get('/:id/edit', isAuthenticated, csrfProtection, function (req, res, nex
       id: req.params.id
     }
   }).then((item) => {
-    res.render('edit', { id: item.id, name: item.name, comment: item.comment, user: req.user, csrfToken: req.csrfToken() });
+    res.render('edit', { title, id: item.id, name: item.name, comment: item.comment, user: req.user, csrfToken: req.csrfToken() });
   });
 });
 
@@ -103,14 +104,14 @@ router.post('/:id/delete', isAuthenticated, csrfProtection, function (req, res, 
 });
 
 router.get('/:id/reservate', isAuthenticated, csrfProtection, function (req, res, next) {
-  const today = new Date();
+  const today = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
   const displayDay = ('0000' + today.getFullYear()).slice(-4) + '/' + ('00' + (today.getMonth() + 1)).slice(-2) + '/' + ('00' + today.getDate()).slice(-2);
   Items.findOne({
     where: {
       id: req.params.id
     }
   }).then((item) => {
-    res.render('reservate', { user: req.user, item: item, displayDay, csrfToken: req.csrfToken() });
+    res.render('reservate', { title, user: req.user, item: item, displayDay, csrfToken: req.csrfToken() });
   });
 });
 
@@ -206,7 +207,6 @@ router.post('/:id/reservate', isAuthenticated, csrfProtection, function (req, re
 
 router.post('/', isAuthenticated, csrfProtection, function (req, res, next) {
   const id = uuid.v4();
-  const date = new Date();
   // console.log(req.body);
   Items.create({
     id: id,

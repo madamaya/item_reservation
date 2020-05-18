@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+const title = require('./title');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -8,7 +9,7 @@ router.get('/', function (req, res, next) {
   if (from) {
     res.cookie('loginFrom', from, { expires: new Date(Date.now() + 600000) });
   }
-  res.render('login');
+  res.render('login', { title });
 });
 
 router.post('/',

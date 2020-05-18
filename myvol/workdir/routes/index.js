@@ -5,6 +5,7 @@ const Users = require('../models/user');
 const Items = require('../models/items');
 const csrf = require('csurf');
 const csrfProtection = csrf({ cookie: true });
+const title = require('./title');
 
 /* GET home page. */
 router.get('/', csrfProtection, function (req, res, next) {
@@ -17,10 +18,10 @@ router.get('/', csrfProtection, function (req, res, next) {
       },
       order: [['createdAt', 'DESC']]
     }).then((items) => {
-      res.render('index', { title: 'Express', items: items, user: req.user, csrfToken: req.csrfToken() });
+      res.render('index', { title, items: items, user: req.user, csrfToken: req.csrfToken() });
     });
   } else {
-    res.render('index', { title: 'Express' });
+    res.render('index', { title });
   }
 });
 
