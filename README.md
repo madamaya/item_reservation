@@ -28,5 +28,5 @@ herokuにデプロイしたもの → <https://mighty-crag-47595.herokuapp.com/>
 
 # 今後の予定
 issueに順次対応する予定です．
-[Issues]: https://github.com/masaya-YAMADA/item_reservation/issues
+[Issues](https://github.com/masaya-YAMADA/item_reservation/issues)
 
