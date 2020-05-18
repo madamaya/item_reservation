@@ -27,5 +27,6 @@ herokuにデプロイしたもの → <https://mighty-crag-47595.herokuapp.com/>
 * 全ての物品の物品名とコメントの編集
 
 # 今後の予定
-issueに順次対応する予定です．[Issues]: https://github.com/masaya-YAMADA/item_reservation/issues
+issueに順次対応する予定です．
+[Issues]: https://github.com/masaya-YAMADA/item_reservation/issues
 
