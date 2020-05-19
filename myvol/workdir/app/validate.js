@@ -61,7 +61,6 @@ $("#form").submit(function () {
       .done(
         (data) => {
           // 重複があるとき
-          // alert(JSON.stringify(data));
           if (!data.return) {
             err = true;
             $('#dupErr').append('<p>指定した時間が他の予約と重複しています</p>')
@@ -70,7 +69,6 @@ $("#form").submit(function () {
       );
   }
   if (err) {
-    // alert('jquery:: err')
     return false;
   }
 });

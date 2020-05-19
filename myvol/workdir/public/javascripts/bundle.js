@@ -104,7 +104,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var global = Function('return this;')();
-global.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a; // import bootstrap from 'bootstrap';
+global.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 function make0Min(time) {
   var dayTime = time.split(' ');
@@ -143,25 +143,19 @@ function reservateTableBox(itemId, now, displayStartTime, displayEndTime) {
       displayEndTime: displayEndTime
     }
   }).done(function (data) {
-    // console.log('===entryjs===');
-    // console.log(JSON.stringify(data));
-    var reservations = data.reservations; // console.log(JSON.stringify(reservations));
-
+    var reservations = data.reservations;
     var classList = ['table-info', 'table-danger', 'table-active'];
     var reservatedList = [];
 
     for (var i = 0; i < reservations.length; i++) {
-      // console.log(reservations[i].startTime + ',' + reservations[i].endTime);
       for (var j = reservations[i].startTime; j < reservations[i].endTime; j = nextTime(j)) {
-        // console.log(j);
         reservatedList.push(j);
       }
     }
 
-    var retList = []; // console.log('st=' + displayStartTime + ' ed=' + displayEndTime);
+    var retList = [];
 
     for (var _i = displayStartTime; _i < displayEndTime; _i = nextTime(_i)) {
-      // console.log(':' + i);
       if (now >= _i) {
         retList.push(2);
       } else if (reservatedList.indexOf(_i) === -1) {
@@ -187,13 +181,11 @@ function reservateTableBox(itemId, now, displayStartTime, displayEndTime) {
       }
 
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayHeaderHours".concat(_i2)).text(('00' + String((_i2 + displayStartHours) % 24)).slice(-2) + ':00');
-    } // console.log(reservatedList);
-    // console.log(retList);
-
+    }
 
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('.reserveTableBox').each(function (i, e) {
-      var box = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e); // box.text(i);
-
+      var box = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e);
+      box.removeClass("table-info table-danger table-active");
       box.addClass(classList[retList[i]]);
     });
   });
@@ -208,14 +200,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).on('load', function () {
     var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
     var now = parseTime(today);
     var displayStartTime = make0Min(parseTime(today));
-    console.log(displayStartTime);
     var displayEndTime = make0Min(parseTime(tomorrow));
-    var itemId = flag[1]; // console.log('itemId=' + itemId);
-
+    var itemId = flag[1];
     reservateTableBox(itemId, now, displayStartTime, displayEndTime);
-    console.log(displayStartTime.split(' ')[0]);
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDay').val(displayStartTime.split(' ')[0]);
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayTimeOption".concat(displayStartTime.split(' ')[1].split(':')[0])).prop('selected', true);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDate').val(displayStartTime.split(' ')[0]);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayTime').val(parseInt(displayStartTime.split(' ')[1].split(':')[0]));
   }
 });
 var displaySpecifiedTime = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displaySpecifiedTime');
@@ -224,19 +213,56 @@ displaySpecifiedTime.on('click', function () {
   var displayDate = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDate').val();
   var displayTime = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayTime').val();
 
-  if (displayDate && displayTime) {
+  if (itemId && displayDate && displayTime) {
     var now = parseTime(new Date());
     var st = new Date(displayDate.split('-')[0], parseInt(displayDate.split('-')[1] - 1), displayDate.split('-')[2], displayTime);
     var displayStartTime = make0Min(parseTime(st));
     var displayEndTime = make0Min(parseTime(new Date(st.getTime() + 24 * 60 * 60 * 1000)));
-    console.log(itemId);
-    console.log(displayDate);
-    console.log(displayTime);
-    console.log(displayStartTime);
-    console.log(displayEndTime);
     reservateTableBox(itemId, now, displayStartTime, displayEndTime);
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDay').val(displayStartTime.split(' ')[0]);
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#displayTimeOption".concat(displayStartTime.split(' ')[1].split(':')[0])).prop('selected', true);
+    displayBefore.data('d-day', displayStartTime.split(' ')[0]);
+    displayBefore.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+    displayAfter.data('d-day', displayStartTime.split(' ')[0]);
+    displayAfter.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+  }
+});
+var displayBefore = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayBeforeDay');
+displayBefore.on('click', function () {
+  var itemId = displayBefore.data('item-id');
+  var displayDate = displayBefore.data('d-day');
+  var displayTime = displayBefore.data('d-time');
+
+  if (itemId && displayDate && displayTime) {
+    var now = parseTime(new Date());
+    var st = new Date(new Date(displayDate.split('-')[0], parseInt(displayDate.split('-')[1] - 1), displayDate.split('-')[2], displayTime).getTime() - 24 * 60 * 60 * 1000);
+    var displayStartTime = make0Min(parseTime(st));
+    var displayEndTime = make0Min(parseTime(new Date(st.getTime() + 24 * 60 * 60 * 1000)));
+    reservateTableBox(itemId, now, displayStartTime, displayEndTime);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDate').val(displayStartTime.split(' ')[0]);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayTime').val(parseInt(displayStartTime.split(' ')[1].split(':')[0]));
+    displayBefore.data('d-day', displayStartTime.split(' ')[0]);
+    displayBefore.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+    displayAfter.data('d-day', displayStartTime.split(' ')[0]);
+    displayAfter.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+  }
+});
+var displayAfter = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayAfterDay');
+displayAfter.on('click', function () {
+  var itemId = displayAfter.data('item-id');
+  var displayDate = displayAfter.data('d-day');
+  var displayTime = displayAfter.data('d-time');
+
+  if (itemId && displayDate && displayTime) {
+    var now = parseTime(new Date());
+    var st = new Date(new Date(displayDate.split('-')[0], parseInt(displayDate.split('-')[1] - 1), displayDate.split('-')[2], displayTime).getTime() + 24 * 60 * 60 * 1000);
+    var displayStartTime = make0Min(parseTime(st));
+    var displayEndTime = make0Min(parseTime(new Date(st.getTime() + 24 * 60 * 60 * 1000)));
+    reservateTableBox(itemId, now, displayStartTime, displayEndTime);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayDate').val(displayStartTime.split(' ')[0]);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#displayTime').val(parseInt(displayStartTime.split(' ')[1].split(':')[0]));
+    displayBefore.data('d-day', displayStartTime.split(' ')[0]);
+    displayBefore.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+    displayAfter.data('d-day', displayStartTime.split(' ')[0]);
+    displayAfter.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
   }
 });
 
@@ -11190,7 +11216,6 @@ $("#form").submit(function () {
       async: false
     }).done(function (data) {
       // 重複があるとき
-      // alert(JSON.stringify(data));
       if (!data["return"]) {
         err = true;
         $('#dupErr').append('<p>指定した時間が他の予約と重複しています</p>');
@@ -11199,7 +11224,6 @@ $("#form").submit(function () {
   }
 
   if (err) {
-    // alert('jquery:: err')
     return false;
   }
 });

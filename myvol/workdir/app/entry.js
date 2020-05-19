@@ -2,7 +2,6 @@
 import $ from 'jquery';
 const global = Function('return this;')();
 global.jQuery = $;
-// import bootstrap from 'bootstrap';
 
 function make0Min(time) {
   const dayTime = time.split(' ');
@@ -41,23 +40,16 @@ function reservateTableBox(itemId, now, displayStartTime, displayEndTime) {
       displayEndTime
     }
   }).done((data) => {
-    // console.log('===entryjs===');
-    // console.log(JSON.stringify(data));
     const reservations = data.reservations;
-    // console.log(JSON.stringify(reservations));
     const classList = ['table-info', 'table-danger', 'table-active'];
     let reservatedList = [];
     for (let i = 0; i < reservations.length; i++) {
-      // console.log(reservations[i].startTime + ',' + reservations[i].endTime);
       for (let j = reservations[i].startTime; j < reservations[i].endTime; j = nextTime(j)) {
-        // console.log(j);
         reservatedList.push(j);
       }
     }
     let retList = [];
-    // console.log('st=' + displayStartTime + ' ed=' + displayEndTime);
     for (let i = displayStartTime; i < displayEndTime; i = nextTime(i)) {
-      // console.log(':' + i);
       if (now >= i) { retList.push(2); }
       else if (reservatedList.indexOf(i) === -1) { retList.push(0); }
       else { retList.push(1); }
@@ -76,20 +68,16 @@ function reservateTableBox(itemId, now, displayStartTime, displayEndTime) {
         $(`#displayHeaderDay${i}`).empty();
       }
       $(`#displayHeaderHours${i}`).text(('00' + String((i + displayStartHours) % 24)).slice(-2) + ':00');
-
     }
-    // console.log(reservatedList);
-    // console.log(retList);
     $('.reserveTableBox').each((i, e) => {
       const box = $(e);
-      // box.text(i);
+      box.removeClass("table-info table-danger table-active");
       box.addClass(classList[retList[i]]);
     });
   });
 }
 
 $(window).on('load', () => {
-
   const path = location.pathname;
   const flag = path.match(/^\/items\/(.*-.*-.*-.*-.*)\/reservate$/);
   if (flag) {
@@ -97,15 +85,13 @@ $(window).on('load', () => {
     const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
     const now = parseTime(today);
     const displayStartTime = make0Min(parseTime(today));
-    console.log(displayStartTime);
     const displayEndTime = make0Min(parseTime(tomorrow));
-
     const itemId = flag[1];
-    // console.log('itemId=' + itemId);
+
     reservateTableBox(itemId, now, displayStartTime, displayEndTime);
-    // console.log(displayStartTime.split(' ')[0]);
-    $('#displayDay').val(displayStartTime.split(' ')[0]);
-    $(`#displayTimeOption${displayStartTime.split(' ')[1].split(':')[0]}`).prop('selected', true);
+
+    $('#displayDate').val(displayStartTime.split(' ')[0]);
+    $('#displayTime').val(parseInt(displayStartTime.split(' ')[1].split(':')[0]));
   }
 });
 
@@ -121,15 +107,56 @@ displaySpecifiedTime.on('click', () => {
     const displayStartTime = make0Min(parseTime(st));
     const displayEndTime = make0Min(parseTime(new Date(st.getTime() + 24 * 60 * 60 * 1000)));
 
-    // console.log(itemId);
-    // console.log(displayDate);
-    // console.log(displayTime);
-    // console.log(displayStartTime);
-    // console.log(displayEndTime);
+    reservateTableBox(itemId, now, displayStartTime, displayEndTime);
+
+    displayBefore.data('d-day', displayStartTime.split(' ')[0]);
+    displayBefore.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+    displayAfter.data('d-day', displayStartTime.split(' ')[0]);
+    displayAfter.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+  }
+});
+
+
+const displayBefore = $('#displayBeforeDay');
+displayBefore.on('click', () => {
+  const itemId = displayBefore.data('item-id');
+  const displayDate = displayBefore.data('d-day');
+  const displayTime = displayBefore.data('d-time');
+  if (itemId && displayDate && displayTime) {
+    const now = parseTime(new Date());
+    const st = new Date(new Date(displayDate.split('-')[0], parseInt(displayDate.split('-')[1] - 1), displayDate.split('-')[2], displayTime).getTime() - 24 * 60 * 60 * 1000);
+    const displayStartTime = make0Min(parseTime(st));
+    const displayEndTime = make0Min(parseTime(new Date(st.getTime() + 24 * 60 * 60 * 1000)));
 
     reservateTableBox(itemId, now, displayStartTime, displayEndTime);
-    $('#displayDay').val(displayStartTime.split(' ')[0]);
-    $(`#displayTimeOption${displayStartTime.split(' ')[1].split(':')[0]}`).prop('selected', true);
-  }
-})
 
+    $('#displayDate').val(displayStartTime.split(' ')[0]);
+    $('#displayTime').val(parseInt(displayStartTime.split(' ')[1].split(':')[0]));
+    displayBefore.data('d-day', displayStartTime.split(' ')[0]);
+    displayBefore.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+    displayAfter.data('d-day', displayStartTime.split(' ')[0]);
+    displayAfter.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+  }
+});
+
+const displayAfter = $('#displayAfterDay');
+displayAfter.on('click', () => {
+  const itemId = displayAfter.data('item-id');
+  const displayDate = displayAfter.data('d-day');
+  const displayTime = displayAfter.data('d-time');
+  if (itemId && displayDate && displayTime) {
+    const now = parseTime(new Date());
+    const st = new Date(new Date(displayDate.split('-')[0], parseInt(displayDate.split('-')[1] - 1), displayDate.split('-')[2], displayTime).getTime() + 24 * 60 * 60 * 1000);
+    const displayStartTime = make0Min(parseTime(st));
+    const displayEndTime = make0Min(parseTime(new Date(st.getTime() + 24 * 60 * 60 * 1000)));
+
+    reservateTableBox(itemId, now, displayStartTime, displayEndTime);
+
+    $('#displayDate').val(displayStartTime.split(' ')[0]);
+    $('#displayTime').val(parseInt(displayStartTime.split(' ')[1].split(':')[0]));
+    displayBefore.data('d-day', displayStartTime.split(' ')[0]);
+    displayBefore.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+    displayAfter.data('d-day', displayStartTime.split(' ')[0]);
+    displayAfter.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
+  }
+});

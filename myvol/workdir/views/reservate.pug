@@ -43,13 +43,9 @@ block content
       td.tableLegend.table-active
       td
         pre 予約不可
-      //- div(style="width:10px; height:10px;").table-active
-      //-   span hello
-      //- div(style="width:10px; height:10px;").table-info
-      //- div(style="width:10px; height:10px;").table-danger
 
-  button#displayBeforeDay.btn-info(disabled) 以前のタイムライン(未)
-  button#displayAfterDay.m-3.btn-info(disabled) 以後のタイムライン(未)
+  button#displayBeforeDay.btn-info(data-item-id=item.id data-d-day=dDay data-d-time=dTime) 以前のタイムライン
+  button#displayAfterDay.m-3.btn-info(data-item-id=item.id data-d-day=dDay data-d-time=dTime) 以後のタイムライン
 
 
   form.mt-4.card(style="width: 21rem;")#form(method="post" action=`/items/${item.id}/reservate`)
@@ -96,4 +92,3 @@ block content
 
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
   script(src="/javascripts/bundle.js")
-  //- script(src="/javascripts/entry.js")
