@@ -125,7 +125,7 @@ router.post('/reservate/:reservationId/delete', isAuthenticated, csrfProtection,
       reservationId
     }
   }).then(() => {
-    const redTo = `/users/${req.user.id}`;
+    const redTo = `/users/`;
     console.log('redTo=' + redTo);
     res.redirect(redTo);
   });

@@ -37,9 +37,10 @@ passport.use(new LocalStrategy(
 var Items = require('./models/items');
 var User = require('./models/user');
 var Reservation = require('./models/reservation');
+
+Reservation.sync();
 Items.sync();
 User.sync();
-Reservation.sync();
 
 var indexRouter = require('./routes/index');
 var itemsRouter = require('./routes/items');
