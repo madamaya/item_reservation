@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require("sequelize");
 const loader = require('./sequelize-loader');
 const Sequelize = loader.Sequelize;
 const Reservation = require('./reservation');
@@ -31,10 +32,20 @@ const Item = loader.database.define('item', {
   hooks: {
     afterBulkUpdate: (options) => {
       const itemId = options.where.id;
-      console.log(itemId);
+      const now = require('../routes/parseTime')(new Date(new Date().getTime() + 9 * 60 * 60 * 1000));
+      console.log('hook now:' + now);
       Reservation.findAll({
         where: {
-          itemId
+          [Op.and]: [
+            {
+              itemId
+            },
+            {
+              startTime: {
+                [Op.gt]: now
+              }
+            }
+          ]
         }
       }).then((reservations) => {
         console.log('hook:' + JSON.stringify(reservations));
