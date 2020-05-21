@@ -1,10 +1,10 @@
 extends layout
 
 block content
-  h2 物品追加
+  h2 備品追加
   form(method="post" action=`/items/${id}`)
     div
-      h5 物品名：
+      h5 備品名：
         span(style="color:red;") 入力必須です
       input(type="text" name="name" value=name required)
     div
