@@ -265,6 +265,20 @@ displayAfter.on('click', function () {
     displayAfter.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
   }
 });
+jquery__WEBPACK_IMPORTED_MODULE_0___default()('#bubutton').on('click', function () {
+  console.log('1');
+  confirm('test');
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()('#deleteItem').submit(function () {
+  if (!confirm('本当にこの備品を削除しますか？')) {
+    return false;
+  }
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()('#deleteReservation').submit(function () {
+  if (!confirm('本当にこの予約を削除しますか？')) {
+    return false;
+  }
+});
 
 /***/ }),
 /* 2 */

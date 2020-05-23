@@ -13,10 +13,13 @@ block content
         p #{reservation.startTime}
         h4 予約終了時間
         p #{reservation.endTime}
-        form(method='post' action=`/items/reservate/${reservation.reservationId}/delete`)
+        form#deleteReservation(method='post' action=`/items/reservate/${reservation.reservationId}/delete`)
           div.text-right
             input(type="hidden" name="_csrf" value!=csrfToken)
             button.m-1.btn-danger(type='submit') 予約を削除する
 
   else
     p 予約はありません
+
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+  script(src="/javascripts/bundle.js")

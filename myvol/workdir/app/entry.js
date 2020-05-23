@@ -160,3 +160,20 @@ displayAfter.on('click', () => {
     displayAfter.data('d-time', displayStartTime.split(' ')[1].split(':')[0]);
   }
 });
+
+$('#bubutton').on('click', () => {
+  console.log('1');
+  confirm('test');
+});
+
+$('#deleteItem').submit(() => {
+  if (!confirm('本当にこの備品を削除しますか？')) {
+    return false;
+  }
+});
+
+$('#deleteReservation').submit(() => {
+  if (!confirm('本当にこの予約を削除しますか？')) {
+    return false;
+  }
+});
