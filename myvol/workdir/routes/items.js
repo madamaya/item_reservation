@@ -193,13 +193,13 @@ router.post('/:id/reservate', isAuthenticated, csrfProtection, function (req, re
         console.log(err);
         // 予約完了ページに遷移
         console.log('complete!' + flag[0]);
-        res.redirect('/');
+        res.render('reservation_safe', { title });
       });
     }
     else {
       // 予約失敗ページに遷移
       console.log('failed!')
-      res.redirect('/');
+      res.render('reservation_failed', { title });
     }
   });
   // res.redirect('/');
