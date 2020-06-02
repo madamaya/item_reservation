@@ -90,7 +90,7 @@ router.post('/append', isAuthenticated, csrfProtection, function (req, res, next
 router.post('/delete', isAuthenticated, csrfProtection, function (req, res, next) {
   const name = req.body.name;
   console.log('name=' + name);
-  if (name !== 'admin') {
+  if (name !== 'admin' && name !== 'user1' && name !== 'user2') {
     User.findOne({
       where: {
         name
