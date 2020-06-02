@@ -6,9 +6,11 @@ const Sequelize = loader.Sequelize;
 const Op = Sequelize.Op;
 const Items = require('../models/items');
 const Reservation = require('../models/reservation');
+const User = require('../models/user');
 const csrf = require('csurf');
 const csrfProtection = csrf({ cookie: true });
 const title = require('./title');
+
 
 /* GET home page. */
 router.get('/', isAuthenticated, csrfProtection, function (req, res, next) {
@@ -64,6 +66,38 @@ router.get('/', isAuthenticated, csrfProtection, function (req, res, next) {
         });
     });
 
+});
+
+
+router.get('/append', isAuthenticated, csrfProtection, function (req, res, next) {
+  res.render('append_user', { title, user: req.user, csrfToken: req.csrfToken() });
+});
+
+router.get('/delete', isAuthenticated, csrfProtection, function (req, res, next) {
+  res.render('delete_user', { title, user: req.user, csrfToken: req.csrfToken() });
+});
+
+router.post('/append', isAuthenticated, csrfProtection, function (req, res, next) {
+  const crypto = require('crypto');
+  const hash = crypto.createHash('sha256');
+  const name = req.body.name;
+  const pass = hash.update(req.body.pass).digest('hex');
+  console.log('name=' + name + ', pass=' + pass);
+  User.create({ name, password: pass }).then(() => { });
+  res.redirect('/');
+});
+
+router.post('/delete', isAuthenticated, csrfProtection, function (req, res, next) {
+  const name = req.body.name;
+  console.log('name=' + name);
+  if (name !== 'admin') {
+    User.findOne({
+      where: {
+        name
+      }
+    }).then((user) => user.destroy());
+  }
+  res.redirect('/');
 });
 
 module.exports = router;

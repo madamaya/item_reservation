@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h2 ユーザ削除
+  form(method="post" action="/users/delete")
+    div
+      h5 削除するユーザ名
+      input(type="text" name="name" required)
+    input(type="hidden" name="_csrf" value!=csrfToken)
+    div
+      button.btn-danger(type="submit") 削除する

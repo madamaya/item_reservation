@@ -3,6 +3,11 @@ extends layout
 block content
   if user
     p こんにちは #{user.name} さん
+    if user.name==='admin'
+      div
+        a(href='/users/append') ユーザを追加する
+      div
+        a(href='/users/delete') ユーザを削除する
     div
       a(href='/users') 予約一覧
     div

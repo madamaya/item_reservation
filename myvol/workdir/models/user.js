@@ -11,6 +11,7 @@ const User = loader.database.define('users', {
   },
   name: {
     type: Sequelize.STRING,
+    unique: true,
     allowNull: false
   },
   password: {
@@ -18,7 +19,6 @@ const User = loader.database.define('users', {
     allowNull: false
   }
 }, {
-
   freezeTableName: true,
   timestamps: false
 });

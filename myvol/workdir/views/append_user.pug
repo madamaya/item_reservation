@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h2 ユーザ追加
+  form(method="post" action="/users/append")
+    div
+      h5 ユーザ名
+      input(type="text" name="name" required)
+    div
+      h5 パスワード:
+      input(type="password" name="pass" required)
+    input(type="hidden" name="_csrf" value!=csrfToken)
+    div
+      button(type="submit") 追加する
