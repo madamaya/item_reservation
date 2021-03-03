@@ -2,7 +2,7 @@
 誰かと共有している備品の利用予約をするためのサイトです．
 利用にはユーザ認証が必要です．
 
-herokuにデプロイしたもの → <https://mighty-crag-47595.herokuapp.com/>
+<!-- herokuにデプロイしたもの → <https://mighty-crag-47595.herokuapp.com/> -->
 
 # ユーザ認証
 認証可能なユーザ名とパスワードの組は以下の通りです．
@@ -28,7 +28,7 @@ herokuにデプロイしたもの → <https://mighty-crag-47595.herokuapp.com/>
 * 全ての備品の物品名とコメントの編集
 
 # Dockerで実行する方法
-Dockerを用いることでローカルの環境でも実行可能です．
+Dockerを用いることでローカルの環境で実行可能です．
 以下のコマンドを実行してください．
 ```
 git clone git@github.com:masaya-YAMADA/item_reservation.git
@@ -37,9 +37,3 @@ docker-compose up --build
 ```
 コンソールに`$ node ./bin/www`が表示され，SQLが実行されたらサーバの起動が完了しています．
 サーバが起動したら <http://localhost:8000> にアクセスしてください．
-
-# 今後の予定
-issueに順次対応する予定です．
-[Issues](https://github.com/masaya-YAMADA/item_reservation/issues)
-
-
